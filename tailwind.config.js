@@ -1,8 +1,6 @@
 // tailwind.config.js
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-  theme: {
-    extend: {},
-  },
+  // v4 は content の代わりに CSS 側で @source を使う
+  theme: { extend: {} },
   plugins: [],
 };
