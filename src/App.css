@@ -1,42 +1,65 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* src/App.css */
+
+/* Tailwind v4 読み込み */
+@import "tailwindcss";
+
+/* どのファイルのクラスをスキャンするか */
+@source "./index.html" "./src/**/*.{js,ts,jsx,tsx}";
+
+/* ====== デザイントークン（OKLCH） ====== */
+:root {
+  --radius: 0.625rem;
+
+  --background: 1 0 0;                 /* white */
+  --foreground: 0.141 0.005 285.823;   /* near-black */
+
+  /* 好きな色に調整してOK（例：バイオレット系） */
+  --primary: 47.223% 0.24326 272.122;          /* OKLCH (L C h) */
+  --primary-foreground: 98.5% 0 0;             /* 白っぽい文字 */
+
+  --muted: 96.7% 0.001 286.375;
+  --muted-foreground: 55.2% 0.016 285.938;
+
+  --accent: 96.7% 0.001 286.375;
+  --accent-foreground: 21% 0.006 285.885;
+
+  --destructive: 57.7% 0.245 27.325;
+
+  --border: 92% 0.004 286.32;
+  --input: 92% 0.004 286.32;
+  --ring: 70.5% 0.015 286.067;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* ====== Tailwind が使うトークン名へマッピング ====== */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+
+  --color-background: oklch(var(--background));
+  --color-foreground: oklch(var(--foreground));
+
+  --color-primary: oklch(var(--primary));
+  --color-primary-foreground: oklch(var(--primary-foreground));
+
+  --color-muted: oklch(var(--muted));
+  --color-muted-foreground: oklch(var(--muted-foreground));
+
+  --color-accent: oklch(var(--accent));
+  --color-accent-foreground: oklch(var(--accent-foreground));
+
+  --color-destructive: oklch(var(--destructive));
+
+  --color-border: oklch(var(--border));
+  --color-input: oklch(var(--input));
+  --color-ring: oklch(var(--ring));
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ベース適用（全ページ共通） */
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body { @apply bg-background text-foreground; }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+/* ここから下は任意のカスタムCSS（必要なら） */
+#root { max-width: 1280px; margin: 0 auto; padding: 2rem; }
