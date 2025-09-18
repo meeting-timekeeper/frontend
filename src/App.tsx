@@ -1,12 +1,13 @@
 // src/App.tsx
+import type { ReactElement } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Top from './pages/Top';
-import New from './pages/New';
-import MeetingDetail from './pages/MeetingDetail';
-import Share from './pages/Share';
+import Top from './pages/Top.tsx';
+import New from './pages/New.tsx';
+import MeetingDetail from './pages/MeetingDetail.tsx';
+import Share from './pages/Share.tsx';
 
-function App() {
+function App(): ReactElement {
   return (
     <Routes>
       <Route path="/" element={<Top />} />
