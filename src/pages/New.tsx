@@ -114,8 +114,8 @@ const New = () => {
                         <SelectValue placeholder="テンプレートを選択" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="0">テンプレートを選択</SelectItem>
+                    <SelectContent className='z-50 bg-white'>
+                      <SelectItem value="0">初めての方</SelectItem>
                       <SelectItem value="1">定例会議</SelectItem>
                       <SelectItem value="2">ブレスト</SelectItem>
                     </SelectContent>
