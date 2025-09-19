@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
+const baseURL = ''; //後で追加
 const schema = z.object({
   title: z.string().min(2, '2文字以上で入力してください'),
   minutes: z.coerce.number().int().positive('正の整数で入力してください'),
@@ -35,9 +35,25 @@ const New = () => {
     defaultValues: { title: '', minutes: 60, templete_id: 0 },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('data:', data);
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const res = await fetch(`${baseURL}/meetings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        throw new Error('サーバーエラー');
+      }
+        const result = await res.json();
+        console.log('登録成功:', result);
+    } catch (err) {
+      console.error('送信エラー:', err);
+    }
   };
+
   return (
     <div className="mx-auto max-w-2xl p-6">
       <header className="relative h-14">
@@ -114,7 +130,7 @@ const New = () => {
                         <SelectValue placeholder="テンプレートを選択" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className='z-50 bg-white'>
+                    <SelectContent className="z-50 bg-white">
                       <SelectItem value="0">初めての方</SelectItem>
                       <SelectItem value="1">定例会議</SelectItem>
                       <SelectItem value="2">ブレスト</SelectItem>
