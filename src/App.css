@@ -13,8 +13,7 @@
   --background: 1 0 0;                 /* white */
   --foreground: 0.141 0.005 285.823;   /* near-black */
 
-  /* 好きな色に調整してOK（例：バイオレット系） */
-  --primary: 47.223% 0.24326 272.122;          /* OKLCH (L C h) */
+  --primary: 48% 0.20 265;          /* ベースカラー　OKLCH (L C h) */
   --primary-foreground: 98.5% 0 0;             /* 白っぽい文字 */
 
   --muted: 96.7% 0.001 286.375;
