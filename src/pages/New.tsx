@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,6 +35,8 @@ const New = () => {
     defaultValues: { title: '', minutes: 60, templete_id: 0 },
   });
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data: FormValues) => {
     try {
       const res = await fetch(`${baseURL}/meetings`, {
@@ -47,8 +49,8 @@ const New = () => {
       if (!res.ok) {
         throw new Error('サーバーエラー');
       }
-        const result = await res.json();
-        console.log('登録成功:', result);
+      const result = await res.json();
+      console.log('登録成功:', result);
     } catch (err) {
       console.error('送信エラー:', err);
     }
@@ -57,9 +59,13 @@ const New = () => {
   return (
     <div className="mx-auto max-w-2xl p-6">
       <header className="relative h-14">
-        <Link to="/" className="absolute left-4 top-1/2 -translate-y-1/2">
-          <Button variant="outline">戻る</Button>
-        </Link>
+        <Button
+          variant="outline"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10"
+          onClick={() => navigate(-1)}
+        >
+          戻る
+        </Button>
         <h1 className="absolute inset-0 flex items-center justify-center text-2xl font-semibold">
           会議を作成
         </h1>
@@ -115,7 +121,7 @@ const New = () => {
 
             <FormField
               control={form.control}
-              name="templete"
+              name="templete_id"
               render={({ field }) => (
                 <FormItem className="space-y-2">
                   <FormLabel className="text-base font-medium">
