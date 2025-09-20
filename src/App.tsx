@@ -12,8 +12,8 @@ function App(): ReactElement {
     <Routes>
       <Route path="/" element={<Top />} />
       <Route path="/new" element={<New />} />
-      <Route path="/:meetingId" element={<MeetingDetail />} />
-      <Route path="/:meetingId/share" element={<Share />} />
+      <Route path="/meetings/:meetingId" element={<MeetingDetail />} />
+      <Route path="/meetings/:meetingId/share" element={<Share />} />
       <Route path="*" element={<div>Not Found</div>} />
     </Routes>
   );
