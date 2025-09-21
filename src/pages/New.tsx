@@ -69,6 +69,8 @@ const New = () => {
       if (!res.ok) throw new Error(await res.text());
       const result = await res.json();
       console.log('登録成功:', result);
+      const meeting_id: string = result.meeting_id;
+      navigate(`/meetings/${meeting_id}/share`)
     } catch (err) {
       console.error('送信エラー:', err);
     }
