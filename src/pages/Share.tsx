@@ -11,35 +11,13 @@ import { Input } from '@/components/ui/input';
 import { Copy, Check, ExternalLink } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
-interface MeetingData {
-  id: string;
-  name: string;
-  template: {
-    id: string;
-    name: string;
-    description: string;
-    items: Array<{
-      title: string;
-      duration: number;
-    }>;
-  };
-  createdAt: string;
-}
-
 export default function Share() {
   const { meetingId } = useParams<{ meetingId: string }>();
-  const [meetingData, setMeetingData] = useState<MeetingData | null>(null);
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
 
   useEffect(() => {
     if (!meetingId) return;
-
-    // localStorage からロード
-    const stored = localStorage.getItem(`meeting-${meetingId}`);
-    if (stored) setMeetingData(JSON.parse(stored));
-
-    // 共有URLを生成
     const url = `${window.location.origin}/meetings/${meetingId}`;
     setShareUrl(url);
   }, [meetingId]);
@@ -54,7 +32,8 @@ export default function Share() {
     }
   };
 
-  if (!meetingData) {
+  //そのミーティングIDに対応するデータの有無に関わらずリンクを発行してる
+  if (!meetingId) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
@@ -86,7 +65,6 @@ export default function Share() {
         </div>
 
         <div className="max-w-2xl mx-auto space-y-6">
-          {/* Share Link */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg md:text-xl">共有リンク</CardTitle>
