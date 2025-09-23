@@ -34,6 +34,8 @@ interface MeetingData {
   }>;
 }
 
+type Phase = 'done' | 'active' | 'todo';
+
 export default function MeetingDetail() {
   const params = useParams<{ meetingId: string }>();
   const meetingId = params.meetingId;
@@ -93,14 +95,27 @@ export default function MeetingDetail() {
       0
     ) * 60;
 
+  const getPhase = (i: number) =>
+    i > currentItemIndex ? 'done' : i === currentItemIndex ? 'active' : 'todo';
+
+  const phaseStyles: Record<Phase, string> = {
+    // 終わった項目：ほんのり緑
+    done: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200/60 text-emerald-700 dark:text-emerald-300',
+    // いまの項目：プライマリを強調
+    active:
+      'bg-primary/10 border-primary/30 text-primary ring-1 ring-primary/40',
+    // これからの項目：通常
+    todo: 'bg-card border-border text-foreground/80 hover:bg-muted',
+  };
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mb-6">
         <h2 className="text-5xl text-center">{meetingData.meeting_name}</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-6">
-          <Card className="flex flex-col items-center justify-center mb-6">
+      <div className="flex flex-col md:flex-row gap-4 min-h-screengap-4 min-h-screen">
+        <div className="md:flex-[2]">
+          <Card className="flex flex-col items-center justify-center mb-6 bg-secondary">
             <CardHeader className="text-center w-full">
               <p>Step{currentItemIndex + 1}</p>
               <CardTitle className="text-xl font-semibold">
@@ -111,6 +126,12 @@ export default function MeetingDetail() {
               </CardDescription>
             </CardHeader>
             <CardContent className="w-full space-y-4">
+              <div className="flex justify-around items-center text-3xl font-mono">
+                <p className="text-center text-5xl font-mono font-bold text-primary">
+                  {Math.floor(elapsedTime / 60)}:
+                  {String(elapsedTime % 60).padStart(2, '0')}
+                </p>
+              </div>
               <Progress value={progress} className="w-full" />
               <p className="text-center text-xl font-mono">
                 残り時間: {Math.floor(remainingTime / 60)}:
@@ -119,7 +140,7 @@ export default function MeetingDetail() {
               <div className="flex justify-center gap-4">
                 <Button
                   onClick={() => setCurrentItemIndex((i) => i - 1)}
-                  disabled={currentItemIndex === meetingData.agenda.length}
+                  disabled={currentItemIndex === 0}
                 >
                   <SkipBack />
                 </Button>
@@ -160,7 +181,7 @@ export default function MeetingDetail() {
             </CardContent>
           </Card>
         </div>
-        <Card className="md:col-span-1">
+        <Card className="md:flex-[1]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
@@ -169,17 +190,25 @@ export default function MeetingDetail() {
           </CardHeader>
           <CardContent>
             <ul className="space-y-3">
-              {meetingData.agenda.map((v, i) => (
-                <li
-                  key={i}
-                  className="flex justify-between items-center border rounded-lg p-3 hover:bg-muted transition"
-                >
-                  <span className="font-medium text-xs">{v.title}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {v.duration_minutes}分
-                  </span>
-                </li>
-              ))}
+              {meetingData.agenda.map((v, i) => {
+                const phase = getPhase(i);
+
+                return (
+                  <li
+                    key={i}
+                    className={[
+                      'flex items-center justify-between rounded-xl border p-3 transition',
+                      phaseStyles[phase],
+                    ].join(' ')}
+                    aria-current={phase === 'active' ? 'step' : undefined}
+                  >
+                    <span className="font-medium">{v.title}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {v.duration_minutes}分
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </CardContent>
         </Card>
